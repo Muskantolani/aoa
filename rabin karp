@@ -1,0 +1,65 @@
+#include<iostream>
+#include<cstring>
+#define d 10
+
+
+using namespace std;
+
+
+void rabinKarp(char text[], char pattern[], int q){
+    int m = strlen(pattern);
+    int n = strlen(text);
+    int i,j;
+    int h = 1; //hash value
+    int t = 0; //text hash value
+    int p = 0; //pattern hash value
+
+
+    //caluclating initial hash value of pattern
+    for(int i=0;i<m-1;i++){
+        h = (h*d)%q;
+    }
+
+
+    //calculating hashvalues of first text window and pattern
+    for(int i=0;i<m;i++){
+        t = (t*d + text[i])%q;
+        p = (p*d + pattern[i])%q;
+    }
+
+
+    //matching
+    for(i=0;i<n-m;i++){
+        if(p==t){
+            for(j=0;j<m;j++){
+                if(text[i+j]!=pattern[j]){
+                    break;
+                }
+            }
+            if(j==m){
+                cout<<"Pattern found at index "<<i<<endl;
+            }
+        }
+
+
+        if(i<n-m){
+            t = (d*(t-text[i]*h)+text[i+m])%q;
+            if(t<0){
+                t = t+q;
+            }
+        }
+    }
+}
+
+
+int main(){
+    char txt[30],ptn[30];
+    cout<<"enter text: ";
+    cin>>txt;
+    cout<<"enter pattern ";
+    cin>>ptn;
+    int q=7;
+    rabinKarp(txt,ptn,q);
+    return 0;
+}
+//O(n+m)
