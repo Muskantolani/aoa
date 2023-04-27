@@ -1,0 +1,46 @@
+#include<iostream>
+
+using namespace std;
+
+
+void subset(int set[] , int n , int sum , int cur_sum , int index , bool selected[]){
+    if(cur_sum == sum){
+        cout << "Subset found : {";
+        for(int i = 0 ; i < n ; i++){
+            if(selected[i]){
+                cout << set[i] << " ";
+            }
+        }
+        cout << "}\n";
+        return;
+    }
+    
+    if(index == n){
+        return;
+    }
+    
+    selected[index] = true;
+    subset(set , n , sum , cur_sum+set[index] , index + 1 , selected);
+    
+    selected[index] = false;
+    subset(set , n , sum , cur_sum , index + 1 , selected);
+}
+
+int main()
+{
+    int n;
+    cout << "Enter size : ";
+    cin >> n;
+    int set[n];
+    bool selected[n] = {false};
+    cout << "Enter elements : \n";
+    for(int i = 0 ; i < n ; i++){
+        cin >> set[i];
+    }
+    int sum;
+    cout << "Enter sum : ";
+    cin >> sum;
+    subset(set , n , sum , 0 , 0 , selected);
+    return 0;
+}
+//O(2^n/2)
