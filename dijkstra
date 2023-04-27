@@ -1,8 +1,10 @@
 #include <iostream>
 using namespace std;
 #include <limits.h>
-#define V 5
-int minDistance(int dist[], bool sptSet[])
+
+int graph[100][100];
+
+int minDistance(int dist[], bool sptSet[] , int V)
 {
     int min = INT_MAX, min_index;
     for (int v = 0; v < V; v++){
@@ -13,14 +15,14 @@ int minDistance(int dist[], bool sptSet[])
     return min_index;
 
 }
-void printSolution(int dist[])
+void printSolution(int dist[] , int V)
 {
     cout << "Vertex \t\t\t Distance from Source" << endl;
     for (int i = 0; i < V; i++)
         cout << i << " \t\t\t\t" << dist[i] << endl;
 }
 
-void dijkstra(int graph[V][V], int src)
+void dijkstra(int graph[100][100], int V , int src)
 {
     int dist[V];
     bool sptSet[V];
@@ -31,7 +33,7 @@ void dijkstra(int graph[V][V], int src)
     dist[src] = 0;
 
     for (int count = 0; count < V - 1; count++){
-        int u = minDistance(dist, sptSet);
+        int u = minDistance(dist, sptSet , V);
         sptSet[u] = true;
 
         for (int v = 0; v < V; v++){
@@ -41,18 +43,22 @@ void dijkstra(int graph[V][V], int src)
         }
     }
 
-    printSolution(dist);
+    printSolution(dist , V);
 }
 
 int main()
 {
-    int graph[V][V] = {{0,10,3,0,0},
-                       {0,0,1,2,0},
-                       {0,4,0,8,2},
-                       {0,0,0,0,7},
-                       {0,0,0,9,0}};
-    dijkstra(graph, 0);
+    int V;
+    cout << "Enter number of vertices : ";
+    cin >> V;
+    for(int i = 0 ; i < V ; i++)
+    {
+        for(int j = 0 ; j < V ; j++)
+        {
+            cin >> graph[i][j];
+        }
+    }
+    dijkstra(graph, V , 0);
     return 0;
 }
-//best O(vlogv)
-//worst O(v^2)
+//O(vlogv) best
