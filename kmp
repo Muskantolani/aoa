@@ -1,0 +1,50 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+void kmp(string text, string pattern) {
+    int n = text.length();
+    int m = pattern.length();
+
+    // Create prefix table
+    vector<int> prefix(m);
+    prefix[0] = 0;
+    int j = 0;
+    for (int i = 1; i < m; i++) {
+        while (j > 0 && pattern[j] != pattern[i]) {
+            j = prefix[j-1];
+        }
+        if (pattern[j] == pattern[i]) {
+            j++;
+        }
+        prefix[i] = j;
+    }
+
+    // Use prefix table to find matches
+    j = 0;
+    for (int i = 0; i < n; i++) {
+        while (j > 0 && pattern[j] != text[i]) {
+            j = prefix[j-1];
+        }
+        if (pattern[j] == text[i]) {
+            j++;
+        }
+        if (j == m) {
+            cout << "Pattern found at index " << i - m + 1 << endl;
+            j = prefix[j-1];
+        }
+    }
+}
+
+int main() {
+    string text, pattern;
+    cout << "Enter the text: ";
+    getline(cin, text);
+    cout << "Enter the pattern: ";
+    getline(cin, pattern);
+    kmp(text, pattern);
+    return 0;
+}
+//O(n+m)
