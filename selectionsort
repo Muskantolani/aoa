@@ -46,3 +46,4 @@ int main()
 	printArray(arr, num);
 	return 0;
 }
+//O(n^2)
